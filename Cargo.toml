@@ -1,8 +1,8 @@
 [package]
 name = "chatbang"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2021"
-description = "Access ChatGPT from your terminal without an API key — Windows edition (Rust port)"
+description = "Access LLMs from your terminal — local (Ollama) or cloud (OpenAI / Groq / Gemini / Together) — with a pluggable tool system."
 authors = ["chatbang contributors"]
 license = "MIT"
 rust-version = "1.79"
@@ -11,16 +11,33 @@ rust-version = "1.79"
 name = "chatbang"
 path = "src/main.rs"
 
+[lib]
+name = "chatbang"
+path = "src/lib.rs"
+
 [dependencies]
-chromiumoxide = { version = "0.7", features = ["tokio-runtime"] }
+chromiumoxide = { version = "0.7", features = ["tokio-runtime"], optional = true }
 tokio = { version = "1", features = ["full"] }
 dirs = "5"
 anyhow = "1"
+thiserror = "1"
 clap = { version = "4", features = ["derive"] }
 termimad = "0.30"
 futures = "0.3"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+async-trait = "0.1"
+schemars = { version = "0.8", features = ["chrono"] }
+regex = "1"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+which = "6"
+tokio-stream = "0.1"
+
+[features]
+default = ["browser"]
+# Browser-based ChatGPT scraping backend (chromiumoxide). Off by default for
+# headless Linux/macOS CI where a Chromium binary is not present.
+browser = ["dep:chromiumoxide"]
 
 [profile.release]
 opt-level = 3
@@ -30,3 +47,6 @@ strip = true
 
 [profile.release.package."*"]
 opt-level = 3
+
+[dev-dependencies]
+tempfile = "3"
