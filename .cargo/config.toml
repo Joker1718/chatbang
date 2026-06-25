@@ -1,0 +1,12 @@
+# Default build target: 64-bit Windows (MSVC toolchain).
+# To cross-compile from another host you will need the target installed:
+#   rustup target add x86_64-pc-windows-msvc
+#
+# On a Windows host with Visual Studio / Build Tools the default toolchain
+# already produces native MSVC binaries, so no extra steps are needed.
+
+[build]
+target = "x86_64-pc-windows-msvc"
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

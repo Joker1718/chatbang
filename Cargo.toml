@@ -1,0 +1,32 @@
+[package]
+name = "chatbang"
+version = "1.0.0"
+edition = "2021"
+description = "Access ChatGPT from your terminal without an API key — Windows edition (Rust port)"
+authors = ["chatbang contributors"]
+license = "MIT"
+rust-version = "1.79"
+
+[[bin]]
+name = "chatbang"
+path = "src/main.rs"
+
+[dependencies]
+chromiumoxide = { version = "0.7", features = ["tokio-runtime"] }
+tokio = { version = "1", features = ["full"] }
+dirs = "5"
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+termimad = "0.30"
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[profile.release.package."*"]
+opt-level = 3
